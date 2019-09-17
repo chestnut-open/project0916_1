@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    //常忽略的地方 rel="stylesheet"-->
+    <link href="assist/plugin/Bootstrap/css/bootstrap.css" rel="stylesheet">
+    <script src="assist/plugin/JQuery/jquery-2.1.1.min.js"></script>
+<!--    验证样式/验证js/中文-->
+    <link href="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/bootstrapValidator.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.bootstrapvalidator/0.5.3/js/language/zh_CN.js"></script>
+    <script>
+        $(function () {
+            $form =$("#login").bootstrapValidator({
+                // 全局默认的错误信息
+                message: "数据验证失败",
+                feedbackIcons: {
+                    //  验证通过的输入框状态
+                    valid: 'glyphicon glyphicon-ok',
+                    //  验证失败的输入框状态
+                    invalid: 'glyphicon glyphicon-remove',
+                    // 验证中的状态
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    username: {
+                        message: "数据不符合规范",
+                        validators: {
+                            notEmpty: {
+                                message: '用户名不能为空',
+                            },
+                            // 自定义验证规则  正则表达式
+                            regexp: {
+                                regexp: /^[a-zA-z]\w{7,20}$/,
+                                message: '用户必须以字母开头长度为8-20',
+                            }
+                        }
+                    },
+                    email: {
+                        message: '邮箱验证失败',
+                        validators: {
+                            notEmpty: {
+                                message: "邮箱不能为空",
+                            },
+                            regexp: {
+                                regexp: /^([a-zA-Z0-9._-])+@([a-zA-Z0-9_-])+(\.[a-zA-Z0-9_-])+/,
+                                message: '邮箱格式不正确',
+                            }
+                        }
+                    },
+                    password: {
+                        message: "密码验证失败",
+                        validators: {
+                            notEmpty: {
+                                message: '密码不能为空'
+                            },
+                            // 不能相同
+                            different: {
+                                field: 'username',
+                                message: '密码不能和用户名相同'
+                            },
+                            regexp: {
+                                // 必须以大写字母开头
+                                regexp: /^[a-zA-Z]\w{7,15}$/,
+                                message: '必须以字母开头长度8-16位'
+                            }
+                        }
+                    },
+                    verify_password: {
+                        validators: {
+                            notEmpty: {
+                                message: '密码不能为空',
+                            },
+                            // 两次输入必须一致
+                            identical: {
+                                field: 'password',
+                                message: '两次输入密码不一致',
+                            },
+                            different: {
+                                field: 'username',
+                                message: '密码不能和用户名相同'
+                            },
+                            regexp: {
+                                // 必须以大写字母开头
+                                regexp: /^[a-zA-Z]\w{7,15}$/,
+                                message: '必须以大写字母开头长度8-16位'
+                            }
+                        }
+                    }
+                }
+            })
+            $form.on("success.form.bv", function (e) {
+                // 3.判断数据通过验证
+                let valid = $(this).data('bootstrapValidator').isValid();
+                if (valid) {
+                    // 4.获取提交的url地址
+                    let url = $(this).attr("action");
+                    alert(url);
+                    // &username=xxx&password=xxx
+                    let data = $(this).serialize();
+                    alert(data);
+                    // 5.ajax提交数据
+                    $.post(url, data, function (result) {
+                        // 成功的回调函数
+                        alert(result)
+                    });
+                }
+                // 阻止事件冒泡
+                return false;
+            })
+
+        })
+
+    </script>
+</head>
+<body>
+<div class="row">
+    <header class="page-header text-center">
+        <h1>用户注册页面</h1>
+    </header>
+<!--    col-lg-offset-3 从左向右补充3列-->
+    <div class="col-lg-6 col-lg-offset-3" id='login_box'>
+        <!--     form-horizontal 水平           -->
+        <form id="login" class="form-horizontal">
+            <div class="form-group">
+
+                <label class="col-lg-3 control-label">用户</label>
+                <div class="col-lg-7">
+                    <input name="username" class="form-control" type="text" placeholder="请输入名字"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">邮箱</label>
+                <div class="col-lg-7">
+                    <input name="email" class="form-control" type="text" placeholder="请输入邮箱"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">密码</label>
+                <div class="col-lg-7">
+                    <input name="password" class="form-control" type="password" placeholder="请输入密码"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-lg-3 control-label">确认密码</label>
+                <div class="col-lg-7">
+                    <input name="verify_password" class="form-control" type="password" placeholder="请输入密码"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-3">
+                    <button type="submit" class="btn-default form-control">登录</button>
+                </div>
+                <div class="col-lg-offset-1 col-lg-3">
+                    <button type="submit" class="btn-default form-control">注册</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</body>
+</html>

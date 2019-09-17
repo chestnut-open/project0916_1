@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<link href="assist/plugin/Bootstrap/css/bootstrap.css">
+    <style>
+        .abc{
+            border: 1px solid  red;
+
+        }
+        @media screen and (max-width: 768px) {
+            .abc{
+                border: 1px solid green;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+<!--语法：@media 媒体类型 and (媒体特性) {你的样式}
+    Screen、All、Print 为最常见的三种媒体类型
+    媒体查询中的大部分接受 `min/max` 前缀，用来表达其逻辑关系，表示应用大于等于或小于等于某个值的情况。没有特殊说明都支持 `min/max`。
+
+- width：Length 渲染界面的宽度
+- height：Length 渲染界面的高度
+-->
+<div class="abc">666</div>
+</body>
+</html>
